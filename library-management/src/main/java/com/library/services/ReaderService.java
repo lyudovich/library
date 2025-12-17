@@ -18,4 +18,14 @@ public class ReaderService {
         reader.setDeletedAt(LocalDateTime.now());
         readerRepository.save(reader);
     }
+
+    public void hardDeleteReader(Long id) {
+        Reader reader = readerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Читача не знайдено"));
+            readerRepository.delete(reader);
+    }
+
+    public void create(Reader reader) {
+        readerRepository.save(reader);
+    }
 }

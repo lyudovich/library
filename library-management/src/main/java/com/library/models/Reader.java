@@ -19,4 +19,11 @@ public class Reader {
 
     private boolean isDeleted = false;
     private LocalDateTime deletedAt;
+
+    private LocalDateTime updatedAt;
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

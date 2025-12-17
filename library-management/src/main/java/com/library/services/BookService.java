@@ -21,7 +21,8 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Book getBookById(Long id) {
+    public Book getBookById(Long id
+    ) {
         return bookRepository.findById(id).orElse(null);
     }
 }

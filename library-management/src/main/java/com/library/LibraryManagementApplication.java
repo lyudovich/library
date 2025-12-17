@@ -1,19 +1,13 @@
-package com.library.library_management;
+package com.library;
 
 import com.library.repositories.BookRepository;
 import com.library.repositories.LoanRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import com.library.models.Book;
-import com.library.models.Loan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.library.repositories")
-@EntityScan("com.library.models")
 public class LibraryManagementApplication {
 
 	public static void main(String[] args) {
