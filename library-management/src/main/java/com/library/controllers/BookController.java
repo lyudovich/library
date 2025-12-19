@@ -38,4 +38,9 @@ public class BookController {
         return bookService.findByTitleContainingIgnoreCase(title);
     }
 
+    @PostMapping
+    public Book addBook(@RequestBody Book book) {
+        return bookService.createBook(book);
+    }
+
 }
