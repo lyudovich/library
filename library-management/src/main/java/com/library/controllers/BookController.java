@@ -25,11 +25,17 @@ public class BookController {
         return bookService.getBookById(id);
     }
 
-    @PutMapping("/{id}/title")
+    @PutMapping("/{id}/updtitle")
     public Book updateBookTitle(
             @PathVariable Long id,
             @RequestParam String newTitle
     ) {
         return bookService.updateBookTitle(id, newTitle);
     }
+
+    @GetMapping("/ftitle")
+    public List<BookView> getBookByTitle(@RequestParam String title) {
+        return bookService.findByTitleContainingIgnoreCase(title);
+    }
+
 }

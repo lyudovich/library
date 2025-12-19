@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/loans")
 public class LoanController {
@@ -15,7 +17,7 @@ public class LoanController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Loan issueBook(
+    public int issueBook(
             @RequestParam Long bookId,
             @RequestParam Long readerId
     ) {

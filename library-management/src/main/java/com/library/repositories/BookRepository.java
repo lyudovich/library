@@ -15,7 +15,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
-    List<Book> findByTitleContainingIgnoreCase(@Param("title") String title);
+    List<BookView> findByTitleContainingIgnoreCase(@Param("title") String title);
 
     List<BookView> findAllBy();
 

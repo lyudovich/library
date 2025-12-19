@@ -14,7 +14,7 @@ public class LoanService {
     @Autowired private ReaderRepository readerRepository;
 
     @Transactional
-    public Loan issueBook(Long bookId, Long readerId) {
+    public int issueBook(Long bookId, Long readerId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Книгу не знайдено"));
 
@@ -27,6 +27,8 @@ public class LoanService {
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusDays(14));
 
-        return loanRepository.save(loan);
+//        return loanRepository.save(loan);
+        return loanRepository.insertLoan(loan.getBook().getId(), loan.getReader().getId(), loan.getLoanDate(),
+                loan.getDueDate(), loan.getReturnDate());
     }
 }
