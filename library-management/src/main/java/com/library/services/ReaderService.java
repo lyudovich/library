@@ -5,6 +5,8 @@ import com.library.repositories.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.library.repositories.projections.ReaderView;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -17,20 +19,23 @@ public class ReaderService {
         readerRepository.save(reader);
     }
 
+    @Transactional
     public void softDeleteReader(Long id) {
-        Reader reader = readerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Читача не знайдено"));
+        int updated = readerRepository.softDeleteById(id);
 
-        reader.setDeleted(true);
-        reader.setDeletedAt(java.time.LocalDateTime.now());
-        readerRepository.save(reader);
+        if (updated == 0) {
+            throw new RuntimeException("Читача не знайдено");
+        }
     }
 
-    public void hardDeleteReader(Long id) {
-        Reader reader = readerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Читача не знайдено"));
 
-        readerRepository.delete(reader);
+    @Transactional
+    public void hardDeleteReader(Long id) {
+        int deleted = readerRepository.hardDeleteById(id);
+
+        if (deleted == 0) {
+            throw new RuntimeException("Читача з ID " + id + " не знайдено");
+        }
     }
 
     public List<ReaderView> getAllReaders() {
