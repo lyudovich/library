@@ -9,9 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,74 +23,71 @@ class ReaderServiceTest {
     @InjectMocks
     private ReaderService readerService;
 
-//    @Test
-//    void softDeleteReader_success() {
-//        Reader reader = new Reader();
-//        reader.setId(1L);
-//        reader.setDeleted(false);
-//
-//        when(readerRepository.findById(1L)).thenReturn(Optional.of(reader));
-//        when(readerRepository.softDeleteById(any())).thenReturn(1);
-//
-//        readerService.softDeleteReader(1L);
-//
-////        assertTrue(reader.isDeleted());
-////        assertNotNull(reader.getDeletedAt());
-////        assertTrue(reader.getDeletedAt().isBefore(LocalDateTime.now().plusSeconds(1)));
-//
-//        verify(readerRepository).findById(1L);
-//        verify(readerRepository).save(reader);
-//        verifyNoMoreInteractions(readerRepository);
-//    }
+    @Test
+    void softDeleteReader_success() {
+
+        when(readerRepository.softDeleteById(1L))
+                .thenReturn(1);
+
+        assertDoesNotThrow(() ->
+                readerService.softDeleteReader(1L)
+        );
+
+        verify(readerRepository).softDeleteById(1L);
+        verifyNoMoreInteractions(readerRepository);
+    }
 
     @Test
     void softDeleteReader_notFound() {
-        when(readerRepository.softDeleteById(1L)).thenReturn(1);
 
-        RuntimeException exception = assertThrows(
+        when(readerRepository.softDeleteById(1L))
+                .thenReturn(0);
+
+        RuntimeException ex = assertThrows(
                 RuntimeException.class,
                 () -> readerService.softDeleteReader(1L)
         );
 
-        assertEquals("Читача не знайдено", exception.getMessage());
+        assertEquals("Читача не знайдено", ex.getMessage());
 
         verify(readerRepository).softDeleteById(1L);
-        verify(readerRepository, never()).save(any());
         verifyNoMoreInteractions(readerRepository);
     }
 
     @Test
     void hardDeleteReader_success() {
-        Reader reader = new Reader();
-        reader.setId(1L);
 
-        when(readerRepository.findById(1L)).thenReturn(Optional.of(reader));
+        when(readerRepository.hardDeleteById(1L))
+                .thenReturn(1);
 
-        readerService.hardDeleteReader(1L);
+        assertDoesNotThrow(() ->
+                readerService.hardDeleteReader(1L)
+        );
 
-        verify(readerRepository).findById(1L);
-        verify(readerRepository).delete(reader);
+        verify(readerRepository).hardDeleteById(1L);
         verifyNoMoreInteractions(readerRepository);
     }
 
-//    @Test
-//    void hardDeleteReader_notFound() {
-//        when(readerRepository.findById(1L)).thenReturn(Optional.empty());
-//
-//        RuntimeException exception = assertThrows(
-//                RuntimeException.class,
-//                () -> readerService.hardDeleteReader(1L)
-//        );
-//
-//        assertEquals("Читача з ID 1 не знайдено", exception.getMessage());
-//
-////        verify(readerRepository).findById(1L);
-//        verify(readerRepository, never()).delete(any());
-////        verifyNoMoreInteractions(readerRepository);
-//    }
+    @Test
+    void hardDeleteReader_notFound() {
+
+        when(readerRepository.hardDeleteById(1L))
+                .thenReturn(0);
+
+        RuntimeException ex = assertThrows(
+                RuntimeException.class,
+                () -> readerService.hardDeleteReader(1L)
+        );
+
+        assertEquals("Читача з ID 1 не знайдено", ex.getMessage());
+
+        verify(readerRepository).hardDeleteById(1L);
+        verifyNoMoreInteractions(readerRepository);
+    }
 
     @Test
     void createReader_success() {
+
         Reader reader = new Reader();
 
         readerService.create(reader);
@@ -101,14 +96,18 @@ class ReaderServiceTest {
         verifyNoMoreInteractions(readerRepository);
     }
 
+
     @Test
     void getAllReaders_success() {
-        ReaderView reader1 = mock(ReaderView.class);
-        ReaderView reader2 = mock(ReaderView.class);
 
-        when(readerRepository.findAllBy()).thenReturn(List.of(reader1, reader2));
+        ReaderView r1 = mock(ReaderView.class);
+        ReaderView r2 = mock(ReaderView.class);
 
-        List<ReaderView> result = readerService.getAllReaders();
+        when(readerRepository.findAllBy())
+                .thenReturn(List.of(r1, r2));
+
+        List<ReaderView> result =
+                readerService.getAllReaders();
 
         assertNotNull(result);
         assertEquals(2, result.size());
