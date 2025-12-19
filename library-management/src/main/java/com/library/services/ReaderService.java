@@ -44,4 +44,8 @@ public class ReaderService {
     public List<ReaderView> getTop() {
       return readerRepository.findTop3ReadersByBorrowCount();
     }
+
+    public List<ReaderView> getAllActiveReaders() {
+        return readerRepository.findAllActiveReaders();
+    }
 }

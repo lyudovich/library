@@ -26,6 +26,11 @@ public class ReaderController {
         return readerService.getTop();
     }
 
+    @GetMapping("/active")
+    public List<ReaderView> getActiveReaders() {
+        return readerService.getAllActiveReaders();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createReader(@RequestBody Reader reader) {
