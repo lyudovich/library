@@ -2,10 +2,12 @@ package com.library.services;
 
 import com.library.models.*;
 import com.library.repositories.*;
+import com.library.repositories.projections.LoanView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -30,5 +32,23 @@ public class LoanService {
 //        return loanRepository.save(loan);
         return loanRepository.insertLoan(loan.getBook().getId(), loan.getReader().getId(), loan.getLoanDate(),
                 loan.getDueDate(), loan.getReturnDate());
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoanView> getAllLoans() {
+        return loanRepository.findAllBy();
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoanView> getActiveLoans() {
+        return loanRepository.findAllByReturnDateIsNull();
+    }
+
+    @Transactional
+    public void deleteLoan(Long loanId) {
+        if (!loanRepository.existsById(loanId)) {
+            throw new RuntimeException("Позика не знайдена");
+        }
+        loanRepository.deleteById(loanId);
     }
 }

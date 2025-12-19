@@ -1,6 +1,7 @@
 package com.library.repositories;
 
 import com.library.models.Loan;
+import com.library.repositories.projections.LoanView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import java.util.List;
+
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Long> {
+
     @Modifying
     @Transactional
     @Query(value = """
@@ -25,4 +29,8 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
             @Param("dueDate") LocalDate dueDate,
             @Param("returnDate") LocalDate returnDate
     );
+
+    List<LoanView> findAllBy();
+
+    List<LoanView> findAllByReturnDateIsNull();
 }

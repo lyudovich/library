@@ -30,12 +30,14 @@ public class BookService {
 
     @Transactional
     public Book updateBookTitle(Long id, String newTitle) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Книгу з ID " + id + " не знайдено"));
+        int updated = bookRepository.updateBookTitleNative(id, newTitle);
 
-        book.setTitle(newTitle);
-        return bookRepository.save(book);
+        if (updated == 0) {
+            throw new RuntimeException("Книгу з ID " + id + " не знайдено");
+        }
+        return null;
     }
+
 
     @Transactional(readOnly = true)
     public Book getBookById(Long id) {
