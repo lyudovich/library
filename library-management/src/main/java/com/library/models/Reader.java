@@ -6,24 +6,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "readers")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor
 public class Reader {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     private String email;
 
-    private boolean isDeleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean deleted = false;
+
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }
+

@@ -7,7 +7,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "authors")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +19,8 @@ public class Author {
 
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
+
+    public Author(String name) {
+        this.name = name;
+    }
 }

@@ -2,49 +2,117 @@ package com.library.services;
 
 import com.library.models.Reader;
 import com.library.repositories.ReaderRepository;
-import jakarta.transaction.Transactional;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
+import com.library.repositories.projections.ReaderView;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-//@ActiveProfiles("test")
-//@Transactional
-
+@ExtendWith(MockitoExtension.class)
 class ReaderServiceTest {
-    @Autowired private ReaderService readerService;
-    @Autowired private ReaderRepository readerRepository;
+
+    @Mock
+    private ReaderRepository readerRepository;
+
+    @InjectMocks
+    private ReaderService readerService;
+
     @Test
-    void softDeleteReader() {
-        Long readerId = 1L;
+    void softDeleteReader_success() {
+        Reader reader = new Reader();
+        reader.setId(1L);
+        reader.setDeleted(false);
 
-        readerService.softDeleteReader(readerId);
+        when(readerRepository.findById(1L)).thenReturn(Optional.of(reader));
 
-        Reader deletedReader = readerRepository.findById(readerId).orElse(null);
-        assertNotNull(deletedReader);
-        assertTrue(deletedReader.isDeleted(), "Прапорець isDeleted має бути true");
-        assertNotNull(deletedReader.getDeletedAt(), "Дата видалення має бути заповнена");
+        readerService.softDeleteReader(1L);
 
-        List<Reader> activeReaders = readerRepository.findAllActiveReaders();
-        boolean existsInActive = activeReaders.stream().anyMatch(r -> r.getId().equals(readerId));
-        assertFalse(existsInActive, "Видалений читач не має з'являтися у списку активних");
+        assertTrue(reader.isDeleted());
+        assertNotNull(reader.getDeletedAt());
+        assertTrue(reader.getDeletedAt().isBefore(LocalDateTime.now().plusSeconds(1)));
+
+        verify(readerRepository).findById(1L);
+        verify(readerRepository).save(reader);
+        verifyNoMoreInteractions(readerRepository);
     }
 
     @Test
-    void hardDeleteReader() {
+    void softDeleteReader_notFound() {
+        when(readerRepository.findById(1L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> readerService.softDeleteReader(1L)
+        );
+
+        assertEquals("Читача не знайдено", exception.getMessage());
+
+        verify(readerRepository).findById(1L);
+        verify(readerRepository, never()).save(any());
+        verifyNoMoreInteractions(readerRepository);
+    }
+
+    @Test
+    void hardDeleteReader_success() {
         Reader reader = new Reader();
-        reader.setDeletedAt(null);
-        reader.setFullName("test1");
-        reader.setEmail("test1");
+        reader.setId(1L);
+
+        when(readerRepository.findById(1L)).thenReturn(Optional.of(reader));
+
+        readerService.hardDeleteReader(1L);
+
+        verify(readerRepository).findById(1L);
+        verify(readerRepository).delete(reader);
+        verifyNoMoreInteractions(readerRepository);
+    }
+
+    @Test
+    void hardDeleteReader_notFound() {
+        when(readerRepository.findById(1L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> readerService.hardDeleteReader(1L)
+        );
+
+        assertEquals("Читача не знайдено", exception.getMessage());
+
+        verify(readerRepository).findById(1L);
+        verify(readerRepository, never()).delete(any());
+        verifyNoMoreInteractions(readerRepository);
+    }
+
+    @Test
+    void createReader_success() {
+        Reader reader = new Reader();
+
         readerService.create(reader);
-        readerService.hardDeleteReader(reader.getId());
-        assertFalse(readerRepository.findById(reader.getId()).isPresent());
+
+        verify(readerRepository).save(reader);
+        verifyNoMoreInteractions(readerRepository);
+    }
+
+    @Test
+    void getAllReaders_success() {
+        ReaderView reader1 = mock(ReaderView.class);
+        ReaderView reader2 = mock(ReaderView.class);
+
+        when(readerRepository.findAllBy()).thenReturn(List.of(reader1, reader2));
+
+        List<ReaderView> result = readerService.getAllReaders();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        verify(readerRepository).findAllBy();
+        verifyNoMoreInteractions(readerRepository);
     }
 }

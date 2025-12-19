@@ -2,6 +2,7 @@ package com.library.services;
 
 import com.library.models.Author;
 import com.library.repositories.AuthorRepository;
+import com.library.repositories.projections.AuthorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,10 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
     @Transactional(readOnly = true)
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public List<AuthorView> getAllAuthors() {
+        return authorRepository.findAllBy();
     }
+
 
     @Transactional
     public Author createAuthor(Author author) {

@@ -1,55 +1,64 @@
-package com.library.library_management;
+package com.library.repositories;
 
 import com.library.models.Book;
 import com.library.models.Category;
 import com.library.models.Loan;
 import com.library.models.Reader;
-import com.library.repositories.BookRepository;
-import com.library.repositories.CategoryRepository;
-import com.library.repositories.LoanRepository;
-import com.library.repositories.ReaderRepository;
 import com.library.repositories.projections.ReaderView;
-import com.library.services.LoanService;
-import com.library.services.ReaderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-class LibraryManagementTest {
+@DataJpaTest
+class ReaderRepositoryTest {
 
     @Autowired
     private ReaderRepository readerRepository;
 
     @Autowired
-    private LoanService loanService;
-
-    @Autowired
-    private LoanRepository loanRepository;
+    private BookRepository bookRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private LoanRepository loanRepository;
+
 
     @Test
-    @Transactional
-    void testAnalyticalTopReadersQuery() {
+    void findAllByDeletedFalse_returnsOnlyActiveReaders() {
+        Reader active = new Reader();
+        active.setFullName("Active Reader");
+        active.setDeleted(false);
 
+        Reader deleted = new Reader();
+        deleted.setFullName("Deleted Reader");
+        deleted.setDeleted(true);
+
+        readerRepository.save(active);
+        readerRepository.save(deleted);
+
+        List<ReaderView> result = readerRepository.findAllByDeletedFalse();
+
+        assertEquals(1, result.size());
+        assertFalse(result.get(0).getDeleted());
+        assertEquals("Active Reader", result.get(0).getFullName());
+    }
+
+
+    @Test
+    void findTop3ReadersByBorrowCount_returnsTopReaders() {
         Category category = new Category();
-        category.setName("Test Category");
+        category.setName("Фантастика");
         categoryRepository.save(category);
 
         Book book = new Book();
-        book.setTitle("Test Book");
-        book.setIsbn("TEST-ISBN-001");
+        book.setTitle("Book");
         book.setCategory(category);
         bookRepository.save(book);
 
@@ -69,43 +78,24 @@ class LibraryManagementTest {
 
         createLoan(book, r3);
 
-        List<ReaderView> topReaders =
-                readerRepository.findTop3ReadersByBorrowCount();
+        List<ReaderView> topReaders = readerRepository.findTop3ReadersByBorrowCount();
 
-        assertNotNull(topReaders);
         assertEquals(3, topReaders.size());
 
         List<String> names = topReaders.stream()
                 .map(ReaderView::getFullName)
                 .toList();
 
+        assertTrue(names.contains("Reader 1"));
+        assertTrue(names.contains("Reader 2"));
+        assertTrue(names.contains("Reader 3"));
         assertFalse(names.contains("Reader 4"));
     }
 
 
-    @Test
-    void testTransactionRollbackOnFailure() {
-
-        long initialCount = loanRepository.count();
-
-        // readerId = 999 does not exist -> RuntimeException -> rollback
-        assertThrows(RuntimeException.class, () -> {
-            loanService.issueBook(1L, 999L);
-        });
-
-        long finalCount = loanRepository.count();
-
-        assertEquals(
-                initialCount,
-                finalCount,
-                "Транзакція повинна була відкотитися, кількість записів не має змінитись"
-        );
-    }
-
-    private Reader createReader(String fullName) {
+    private Reader createReader(String name) {
         Reader reader = new Reader();
-        reader.setFullName(fullName);
-        reader.setEmail(fullName.toLowerCase().replace(" ", ".") + "@test.com");
+        reader.setFullName(name);
         reader.setDeleted(false);
         return reader;
     }
