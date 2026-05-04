@@ -61,3 +61,10 @@ CREATE TABLE book_authors (
                               CONSTRAINT fk_ba_book FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
                               CONSTRAINT fk_ba_author FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
 );
+
+CREATE TABLE users (
+                       id SERIAL PRIMARY KEY,
+                       username VARCHAR(100) UNIQUE NOT NULL,
+                       password VARCHAR(255) NOT NULL,
+                       role VARCHAR(20) NOT NULL
+);

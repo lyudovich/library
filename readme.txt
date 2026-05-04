@@ -1,3 +1,16 @@
+
+POST /api/auth/register
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+POST http://localhost:8080/api/auth/login
+{
+  "username": "admin",
+  "password": "admin"
+}
+
 JSON new book
 {
    "title": "Місто",
