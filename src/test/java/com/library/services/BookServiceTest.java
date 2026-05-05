@@ -1,7 +1,9 @@
 package com.library.services;
 
 import com.library.models.Book;
+import com.library.models.BookCreatedEvent;
 import com.library.repositories.BookRepository;
+import com.library.services.event.EventBus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -24,6 +26,11 @@ class BookServiceTest {
     @InjectMocks
     private BookService bookService;
 
+    @Mock
+    private AuditService auditService;
+
+    @Mock
+    private EventBus eventBus;
 
     @Test
     void updateBookTitle_success() {
@@ -105,6 +112,10 @@ class BookServiceTest {
         assertEquals("Місто", created.getTitle());
 
         verify(bookRepository).save(toCreate);
+
+        verify(auditService).log("BOOK_CREATED_SYNC", "Місто");
+        verify(eventBus).publish(any(BookCreatedEvent.class));
+
         verifyNoMoreInteractions(bookRepository);
     }
 
@@ -136,6 +147,50 @@ class BookServiceTest {
         assertEquals("Назва книги не може бути порожньою", ex.getMessage());
 
         verifyNoInteractions(bookRepository);
+    }
+
+    @Test
+    void createBook_publishesEvent() {
+        Book toCreate = new Book();
+        toCreate.setTitle("Test");
+
+        when(bookRepository.save(any(Book.class)))
+                .thenAnswer(inv -> {
+                    Book b = inv.getArgument(0);
+                    b.setId(1L);
+                    return b;
+                });
+
+        ArgumentCaptor<BookCreatedEvent> captor =
+                ArgumentCaptor.forClass(BookCreatedEvent.class);
+
+        bookService.createBook(toCreate);
+
+        verify(eventBus).publish(captor.capture());
+
+        BookCreatedEvent event = captor.getValue();
+
+        assertEquals(1L, event.bookId);
+        assertEquals("Test", event.title);
+    }
+
+    @Test
+    void createBook_auditFails_butBookStillCreated() {
+        Book toCreate = new Book();
+        toCreate.setTitle("Test");
+
+        when(bookRepository.save(any(Book.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
+
+        doThrow(new RuntimeException("Audit error"))
+                .when(auditService).log(any(), any());
+
+        assertDoesNotThrow(() ->
+                bookService.createBook(toCreate)
+        );
+
+        verify(bookRepository).save(toCreate);
+        verify(eventBus).publish(any(BookCreatedEvent.class));
     }
 }
 

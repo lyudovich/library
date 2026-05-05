@@ -3,6 +3,7 @@ package com.library.services;
 import com.library.models.Author;
 import com.library.repositories.AuthorRepository;
 import com.library.projections.AuthorView;
+import com.library.userModel.UserAuthor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,10 +32,10 @@ class AuthorServiceTest {
         List<AuthorView> authors = List.of(author1, author2);
         when(authorRepository.findAllBy()).thenReturn(authors);
 
-        List<AuthorView> result = authorService.getAllAuthors();
+        List<UserAuthor> allAuthors = authorService.getAllAuthors();
 
-        assertNotNull(result);
-        assertEquals(2, result.size());
+        assertNotNull(allAuthors);
+        assertEquals(2, allAuthors.size());
 
         verify(authorRepository).findAllBy();
     }

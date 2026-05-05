@@ -3,6 +3,7 @@ package com.library.services;
 import com.library.models.Reader;
 import com.library.repositories.ReaderRepository;
 import com.library.projections.ReaderView;
+import com.library.userModel.UserReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -106,11 +107,10 @@ class ReaderServiceTest {
         when(readerRepository.findAllBy())
                 .thenReturn(List.of(r1, r2));
 
-        List<ReaderView> result =
-                readerService.getAllReaders();
+        List<UserReader> allReaders = readerService.getAllReaders();
 
-        assertNotNull(result);
-        assertEquals(2, result.size());
+        assertNotNull(allReaders);
+        assertEquals(2, allReaders.size());
 
         verify(readerRepository).findAllBy();
         verifyNoMoreInteractions(readerRepository);

@@ -1,17 +1,30 @@
 #  Система управління бібліотекою (Library Management System)
 
-##  Опис проєкту
-**Library Management System** — це backend-додаток для автоматизації роботи бібліотеки.  
+## Опис проєкту
+Library Management System — це backend-додаток для автоматизації роботи бібліотеки.
 Система дозволяє керувати книгами, авторами та категоріями, а також відстежувати процес видачі книг читачам.
 
 Проєкт реалізовано у вигляді REST API з використанням сучасного стеку Java-технологій.
 
----
+## Склад команди
+- Коханюк Анастасія
 
-##  Склад команди
-- **Коханюк Анастасія**
+##  Технологічний стек
+- Java 17
+- Spring Boot 3
+- PostgreSQL
+- Spring Data JPA
+- Docker
+- JUnit 5
 
----
+## Лабораторна робота 4
+Реалізовано sync та async комунікацію через AuditService та EventBus.
+
+Sync:
+auditService.log("BOOK_CREATED_SYNC", saved.getTitle());
+
+Async:
+eventBus.publish(new BookCreatedEvent(saved.getId(), saved.getTitle()));
 
 ##  Технологічний стек
 

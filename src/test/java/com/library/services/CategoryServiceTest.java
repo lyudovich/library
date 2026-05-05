@@ -3,6 +3,7 @@ package com.library.services;
 import com.library.models.Category;
 import com.library.repositories.CategoryRepository;
 import com.library.projections.CategoryView;
+import com.library.userModel.UserCategory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,11 +31,9 @@ class CategoryServiceTest {
 
         when(categoryRepository.findAllBy())
                 .thenReturn(List.of(category1, category2));
-
-        List<CategoryView> result = categoryService.getAllCategories();
-
-        assertNotNull(result);
-        assertEquals(2, result.size());
+        List<UserCategory> allCategories = categoryService.getAllCategories();
+        assertNotNull(allCategories);
+        assertEquals(2, allCategories.size());
 
         verify(categoryRepository).findAllBy();
     }
