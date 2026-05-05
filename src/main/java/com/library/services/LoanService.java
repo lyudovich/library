@@ -2,7 +2,7 @@ package com.library.services;
 
 import com.library.models.*;
 import com.library.repositories.*;
-import com.library.projections.LoanView;
+import com.library.userModel.UserLoan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class LoanService {
+public class LoanService implements ILoanService {
+
     @Autowired private LoanRepository loanRepository;
     @Autowired private BookRepository bookRepository;
     @Autowired private ReaderRepository readerRepository;
@@ -29,19 +30,48 @@ public class LoanService {
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusDays(14));
 
-//        return loanRepository.save(loan);
         return loanRepository.insertLoan(loan.getBook().getId(), loan.getReader().getId(), loan.getLoanDate(),
                 loan.getDueDate(), loan.getReturnDate());
     }
 
     @Transactional(readOnly = true)
-    public List<LoanView> getAllLoans() {
-        return loanRepository.findAllBy();
+    public List<UserLoan> getAllLoans() {
+        return loanRepository.findAllBy().stream()
+                .map(lv -> {
+                    UserLoan ul = new UserLoan();
+                    ul.setId(lv.getId());
+                    ul.setLoanDate(lv.getLoanDate());
+                    ul.setDueDate(lv.getDueDate());
+                    ul.setReturnDate(lv.getReturnDate());
+                    ul.setBookId(lv.getBook() != null ? lv.getBook().getId() : null);
+                    ul.setBookTitle(lv.getBook() != null ? lv.getBook().getTitle() : null);
+                    ul.setBookIsbn(lv.getBook() != null ? lv.getBook().getIsbn() : null);
+                    ul.setReaderId(lv.getReader() != null ? lv.getReader().getId() : null);
+                    ul.setReaderFullName(lv.getReader() != null ? lv.getReader().getFullName() : null);
+                    ul.setReaderEmail(lv.getReader() != null ? lv.getReader().getEmail() : null);
+                    return ul;
+                })
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<LoanView> getActiveLoans() {
-        return loanRepository.findAllByReturnDateIsNull();
+    public List<UserLoan> getActiveLoans() {
+        return loanRepository.findAllByReturnDateIsNull().stream()
+                .map(lv -> {
+                    UserLoan ul = new UserLoan();
+                    ul.setId(lv.getId());
+                    ul.setLoanDate(lv.getLoanDate());
+                    ul.setDueDate(lv.getDueDate());
+                    ul.setReturnDate(lv.getReturnDate());
+                    ul.setBookId(lv.getBook() != null ? lv.getBook().getId() : null);
+                    ul.setBookTitle(lv.getBook() != null ? lv.getBook().getTitle() : null);
+                    ul.setBookIsbn(lv.getBook() != null ? lv.getBook().getIsbn() : null);
+                    ul.setReaderId(lv.getReader() != null ? lv.getReader().getId() : null);
+                    ul.setReaderFullName(lv.getReader() != null ? lv.getReader().getFullName() : null);
+                    ul.setReaderEmail(lv.getReader() != null ? lv.getReader().getEmail() : null);
+                    return ul;
+                })
+                .toList();
     }
 
     @Transactional

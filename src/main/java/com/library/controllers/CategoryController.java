@@ -1,8 +1,8 @@
 package com.library.controllers;
 
 import com.library.models.Category;
-import com.library.projections.CategoryView;
-import com.library.services.CategoryService;
+import com.library.services.ICategoryService;
+import com.library.userModel.UserCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private ICategoryService categoryService;
 
     @GetMapping
-    public List<CategoryView> getAllCategories() {
+    public List<UserCategory> getAllCategories() {
         return categoryService.getAllCategories();
     }
 

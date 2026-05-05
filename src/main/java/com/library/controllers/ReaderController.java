@@ -1,8 +1,8 @@
 package com.library.controllers;
 
 import com.library.models.Reader;
-import com.library.projections.ReaderView;
-import com.library.services.ReaderService;
+import com.library.services.IReaderService;
+import com.library.userModel.UserReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,20 +14,20 @@ import java.util.List;
 public class ReaderController {
 
     @Autowired
-    private ReaderService readerService;
+    private IReaderService readerService;
 
     @GetMapping
-    public List<ReaderView> getAllReaders() {
+    public List<UserReader> getAllReaders() {
         return readerService.getAllReaders();
     }
 
     @GetMapping("/top")
-    public List<ReaderView> getTopReaders() {
+    public List<UserReader> getTopReaders() {
         return readerService.getTop();
     }
 
     @GetMapping("/active")
-    public List<ReaderView> getActiveReaders() {
+    public List<UserReader> getActiveReaders() {
         return readerService.getAllActiveReaders();
     }
 

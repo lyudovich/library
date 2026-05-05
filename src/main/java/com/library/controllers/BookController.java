@@ -3,7 +3,7 @@ package com.library.controllers;
 import com.library.models.Book;
 import com.library.projections.BookView;
 import com.library.security.SecurityUtil;
-import com.library.services.BookServiceImp;
+import com.library.services.IBookService;
 import com.library.userModel.UserBook;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +16,17 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private BookServiceImp bookServiceImp;
+    private IBookService bookService;
 
     @GetMapping
     public List<UserBook> getAllBooks(HttpServletRequest request) {
         SecurityUtil.requireAdmin(request);
-        return bookServiceImp.getAllBooks();
+        return bookService.getAllBooks();
     }
 
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable Long id) {
-        return bookServiceImp.getBookById(id);
+        return bookService.getBookById(id);
     }
 
     @PutMapping("/{id}/updtitle")
@@ -34,18 +34,17 @@ public class BookController {
             @PathVariable Long id,
             @RequestParam String newTitle
     ) {
-        return bookServiceImp.updateBookTitle(id, newTitle);
+        return bookService.updateBookTitle(id, newTitle);
     }
 
     @GetMapping("/ftitle")
     public List<BookView> getBookByTitle(@RequestParam String title) {
-        return bookServiceImp.findByTitleContainingIgnoreCase(title);
+        return bookService.findByTitleContainingIgnoreCase(title);
     }
 
     @PostMapping
     public Book addBook(@RequestBody Book book, HttpServletRequest request) {
         SecurityUtil.requireAdmin(request);
-        return bookServiceImp.createBook(book);
+        return bookService.createBook(book);
     }
-
 }

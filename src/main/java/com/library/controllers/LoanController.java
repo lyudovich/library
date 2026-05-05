@@ -1,7 +1,7 @@
 package com.library.controllers;
 
-import com.library.projections.LoanView;
-import com.library.services.LoanService;
+import com.library.services.ILoanService;
+import com.library.userModel.UserLoan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 public class LoanController {
 
     @Autowired
-    private LoanService loanService;
+    private ILoanService loanService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -25,7 +25,7 @@ public class LoanController {
     }
 
     @GetMapping
-    public List<LoanView> getAllLoans() {
+    public List<UserLoan> getAllLoans() {
         return loanService.getAllLoans();
     }
 

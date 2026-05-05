@@ -1,8 +1,8 @@
 package com.library.controllers;
 
 import com.library.models.Author;
-import com.library.projections.AuthorView;
-import com.library.services.AuthorService;
+import com.library.services.IAuthorService;
+import com.library.userModel.UserAuthor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 public class AuthorController {
 
     @Autowired
-    private AuthorService authorService;
+    private IAuthorService authorService;
 
     @GetMapping
-    public List<AuthorView> getAllAuthors() {
+    public List<UserAuthor> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 

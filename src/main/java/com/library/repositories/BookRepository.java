@@ -18,9 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<BookView> findByTitleContainingIgnoreCase(@Param("title") String title);
 
 
-//    List<BookView> findAllBy();
-    List<Book> findAllBy();
-
+    List<BookView> findAllBy();
 
     @Modifying
     @Transactional
