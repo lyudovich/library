@@ -1,6 +1,6 @@
 package com.library.controllers;
 
-import com.library.services.ILoanService;
+import com.library.core.services.ILoanService;
 import com.library.userModel.UserLoan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

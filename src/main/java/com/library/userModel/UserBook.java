@@ -1,7 +1,5 @@
 package com.library.userModel;
 
-import com.library.models.Category;
-import com.library.projections.BookView;
 import lombok.Getter;
 import lombok.Setter;
 

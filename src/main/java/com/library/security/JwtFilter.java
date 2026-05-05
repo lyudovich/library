@@ -1,7 +1,7 @@
 package com.library.security;
 
-import com.library.models.User;
-import com.library.repositories.UserRepository;
+import com.library.core.models.User;
+import com.library.core.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

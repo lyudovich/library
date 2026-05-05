@@ -1,18 +1,17 @@
 package com.library.services;
 
-import com.library.models.Book;
-import com.library.models.Loan;
-import com.library.models.Reader;
-import com.library.repositories.BookRepository;
-import com.library.repositories.LoanRepository;
-import com.library.repositories.ReaderRepository;
+import com.library.core.models.Book;
+import com.library.core.models.Reader;
+import com.library.core.repositories.BookRepository;
+import com.library.core.repositories.LoanRepository;
+import com.library.core.repositories.ReaderRepository;
+import com.library.core.services.LoanService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

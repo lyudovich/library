@@ -1,7 +1,7 @@
 package com.library.controllers;
 
-import com.library.models.Author;
-import com.library.services.IAuthorService;
+import com.library.core.models.Author;
+import com.library.core.services.IAuthorService;
 import com.library.userModel.UserAuthor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

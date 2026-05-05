@@ -1,7 +1,8 @@
 package com.library.services;
 
-import com.library.models.Author;
-import com.library.repositories.AuthorRepository;
+import com.library.core.models.Author;
+import com.library.core.repositories.AuthorRepository;
+import com.library.core.services.AuthorService;
 import com.library.projections.AuthorView;
 import com.library.userModel.UserAuthor;
 import org.junit.jupiter.api.Test;

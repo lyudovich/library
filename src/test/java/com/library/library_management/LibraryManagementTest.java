@@ -1,15 +1,15 @@
 package com.library.library_management;
 
-import com.library.models.Book;
-import com.library.models.Category;
-import com.library.models.Loan;
-import com.library.models.Reader;
-import com.library.repositories.BookRepository;
-import com.library.repositories.CategoryRepository;
-import com.library.repositories.LoanRepository;
-import com.library.repositories.ReaderRepository;
+import com.library.core.models.Book;
+import com.library.core.models.Category;
+import com.library.core.models.Loan;
+import com.library.core.models.Reader;
+import com.library.core.repositories.BookRepository;
+import com.library.core.repositories.CategoryRepository;
+import com.library.core.repositories.LoanRepository;
+import com.library.core.repositories.ReaderRepository;
 import com.library.projections.ReaderView;
-import com.library.services.LoanService;
+import com.library.core.services.LoanService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,9 +1,13 @@
 package com.library.repositories;
 
-import com.library.models.Book;
-import com.library.models.Category;
-import com.library.models.Loan;
-import com.library.models.Reader;
+import com.library.core.models.Book;
+import com.library.core.models.Category;
+import com.library.core.models.Loan;
+import com.library.core.models.Reader;
+import com.library.core.repositories.BookRepository;
+import com.library.core.repositories.CategoryRepository;
+import com.library.core.repositories.LoanRepository;
+import com.library.core.repositories.ReaderRepository;
 import com.library.projections.ReaderView;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

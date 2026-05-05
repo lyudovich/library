@@ -1,9 +1,9 @@
 package com.library.controllers;
 
-import com.library.models.User;
-import com.library.repositories.UserRepository;
+import com.library.core.models.User;
+import com.library.core.repositories.UserRepository;
 import com.library.security.PasswordUtil;
-import com.library.services.UserService;
+import com.library.core.services.UserService;
 import com.library.security.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

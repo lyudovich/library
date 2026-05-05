@@ -1,9 +1,11 @@
 package com.library.services;
 
-import com.library.models.Book;
-import com.library.models.BookCreatedEvent;
-import com.library.repositories.BookRepository;
-import com.library.services.event.EventBus;
+import com.library.core.models.Book;
+import com.library.core.models.BookCreatedEvent;
+import com.library.core.repositories.BookRepository;
+import com.library.core.services.AuditService;
+import com.library.core.services.BookService;
+import com.library.core.services.event.EventBus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

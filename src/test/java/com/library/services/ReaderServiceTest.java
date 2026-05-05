@@ -1,7 +1,8 @@
 package com.library.services;
 
-import com.library.models.Reader;
-import com.library.repositories.ReaderRepository;
+import com.library.core.models.Reader;
+import com.library.core.repositories.ReaderRepository;
+import com.library.core.services.ReaderService;
 import com.library.projections.ReaderView;
 import com.library.userModel.UserReader;
 import org.junit.jupiter.api.Test;

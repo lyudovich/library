@@ -1,7 +1,7 @@
 package com.library.controllers;
 
-import com.library.models.Reader;
-import com.library.services.IReaderService;
+import com.library.core.models.Reader;
+import com.library.core.services.IReaderService;
 import com.library.userModel.UserReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

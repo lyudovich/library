@@ -1,7 +1,7 @@
 package com.library;
 
-import com.library.repositories.BookRepository;
-import com.library.repositories.LoanRepository;
+import com.library.core.repositories.BookRepository;
+import com.library.core.repositories.LoanRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

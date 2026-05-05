@@ -1,7 +1,8 @@
 package com.library.services;
 
-import com.library.models.Category;
-import com.library.repositories.CategoryRepository;
+import com.library.core.models.Category;
+import com.library.core.repositories.CategoryRepository;
+import com.library.core.services.CategoryService;
 import com.library.projections.CategoryView;
 import com.library.userModel.UserCategory;
 import org.junit.jupiter.api.Test;

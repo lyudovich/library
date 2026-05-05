@@ -1,7 +1,7 @@
 package com.library.controllers;
 
-import com.library.models.Category;
-import com.library.services.ICategoryService;
+import com.library.core.models.Category;
+import com.library.core.services.ICategoryService;
 import com.library.userModel.UserCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

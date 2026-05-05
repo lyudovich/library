@@ -1,9 +1,9 @@
 package com.library.controllers;
 
-import com.library.models.Book;
+import com.library.core.models.Book;
 import com.library.projections.BookView;
 import com.library.security.SecurityUtil;
-import com.library.services.IBookService;
+import com.library.core.services.IBookService;
 import com.library.userModel.UserBook;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
