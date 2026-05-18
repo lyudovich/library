@@ -1,4 +1,4 @@
-package com.library.models;
+package com.library.core.models;
 
 public class BookCreatedEvent {
     public final Long bookId;

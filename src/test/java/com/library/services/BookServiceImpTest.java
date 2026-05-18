@@ -1,7 +1,8 @@
 package com.library.services;
 
-import com.library.models.Book;
-import com.library.repositories.BookRepository;
+import com.library.core.models.Book;
+import com.library.core.repositories.BookRepository;
+import com.library.core.services.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +22,7 @@ class BookServiceImpTest {
     private BookRepository bookRepository;
 
     @InjectMocks
-    private BookServiceImp bookServiceImp;
+    private BookService bookServiceImp;
 
 
     @Test
