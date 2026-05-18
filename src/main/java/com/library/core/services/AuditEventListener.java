@@ -1,6 +1,6 @@
 package com.library.core.services;
 
-import com.library.models.BookCreatedEvent;
+import com.library.core.models.BookCreatedEvent;
 import com.library.core.services.event.EventBus;
 import org.springframework.stereotype.Component;
 

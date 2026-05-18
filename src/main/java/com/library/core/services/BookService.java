@@ -5,7 +5,7 @@ import com.library.projections.BookView;
 import com.library.core.repositories.BookRepository;
 import com.library.core.services.event.EventBus;
 import com.library.userModel.UserBook;
-import com.library.models.BookCreatedEvent;
+import com.library.core.models.BookCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

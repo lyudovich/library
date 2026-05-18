@@ -1,7 +1,7 @@
 package com.library.analytics.acl;
 
 import com.library.core.models.BookStats;
-import com.library.models.BookCreatedEvent;
+import com.library.core.models.BookCreatedEvent;
 
 public class BookEventMapper {
 

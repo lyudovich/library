@@ -4,7 +4,7 @@ import com.library.analytics.acl.BookEventMapper;
 
 import com.library.core.models.BookStats;
 import com.library.core.services.event.EventBus;
-import com.library.models.BookCreatedEvent;
+import com.library.core.models.BookCreatedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
